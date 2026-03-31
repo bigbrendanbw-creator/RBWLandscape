@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RBW Landscape Development | Clearlake, CA | Lake County</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --black:    #080f08;
+            --dark:     #0d180d;
+            --darker:   #111e11;
+            --green:    #2a6e2a;
+            --green-mid:#3a8f3a;
+            --green-bright: #5cb85c;
+            --gold:     #c8a052;
+            --gold-light:#dbb96a;
+            --white:    #f0f0e8;
+            --gray:     #7a8a7a;
+            --light:    #b0bab0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            background: var(--black);
+            color: var(--white);
+            font-family: 'Inter', system-ui, sans-serif;
+            overflow-x: hidden;
+        }
+
+        /* ── SCROLLBAR ── */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--dark); }
+        ::-webkit-scrollbar-thumb { background: var(--green); border-radius: 3px; }
+
+        /* ── NAV ── */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.4rem 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.4s;
+        }
+
+        nav.scrolled {
+            background: rgba(8,15,8,0.97);
+            backdrop-filter: blur(20px);
+            padding: 0.9rem 2.5rem;
+            border-bottom: 1px solid rgba(42,110,42,0.3);
+        }
+
+        .nav-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 2px;
+            color: var(--white);
+            text-transform: uppercase;
+        }
+
+        .nav-logo span { color: var(--green-bright); }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--light);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover { color: var(--green-bright); }
+
+        .nav-cta {
+            background: var(--green);
+            color: var(--white) !important;
+            padding: 0.6rem 1.4rem;
+            border-radius: 4px;
+            font-weight: 600 !important;
+            transition: background 0.3s !important;
+        }
+
+        .nav-cta:hover { background: var(--green-mid) !important; color: var(--white) !important; }
+
+        .nav-phone {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .nav-phone:hover { color: var(--gold-light); }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 24px;
+            height: 2px;
+            background: var(--white);
+            transition: all 0.3s;
+        }
+
+        /* ── HERO ── */
+        #hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            background: var(--dark);
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 70% 50%, rgba(42,110,42,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(200,160,82,0.08) 0%, transparent 50%);
+        }
+
+        .hero-photo {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 52%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .hero-photo::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, var(--dark) 0%, rgba(13,24,13,0.3) 40%, transparent 100%);
+            z-index: 1;
+        }
+
+        .hero-photo img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            opacity: 0.55;
+        }
+
+        .hero-photo-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1a2e1a 0%, #0d180d 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+        }
+
+        .hero-photo-placeholder-icon { font-size: 3rem; opacity: 0.15; }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            padding: 8rem 2.5rem 4rem;
+            max-width: 680px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(42,110,42,0.2);
+            border: 1px solid rgba(92,184,92,0.3);
+            border-radius: 50px;
+            padding: 0.4rem 1rem;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--green-bright);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-badge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--green-bright);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .hero-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            line-height: 0.9;
+            letter-spacing: 2px;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-title .accent { color: var(--green-bright); }
+        .hero-title .gold { color: var(--gold); }
+
+        .hero-sub {
+            font-size: clamp(1rem, 2vw, 1.15rem);
+            color: var(--light);
+            line-height: 1.7;
+            margin-bottom: 0.8rem;
+            max-width: 520px;
+            font-weight: 300;
+        }
+
+        .hero-owner {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gold);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+        }
+
+        .hero-owner::before {
+            content: '';
+            width: 24px;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+        }
+
+        .btn-green {
+            background: var(--green);
+            color: var(--white);
+            padding: 0.9rem 2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: background 0.3s, transform 0.2s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-green:hover { background: var(--green-mid); transform: translateY(-2px); }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--white);
+            padding: 0.9rem 2rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border: 1px solid rgba(255,255,255,0.25);
+            transition: border-color 0.3s, color 0.3s, transform 0.2s;
+        }
+
+        .btn-outline:hover { border-color: var(--green-bright); color: var(--green-bright); transform: translateY(-2px); }
+
+        .hero-stats {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .hero-stat-num {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            color: var(--green-bright);
+            line-height: 1;
+        }
+
+        .hero-stat-label {
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gray);
+            margin-top: 0.2rem;
+        }
+
+        /* ── TRUST BAR ── */
+        .trust-bar {
+            background: rgba(42,110,42,0.12);
+            border-top: 1px solid rgba(42,110,42,0.2);
+            border-bottom: 1px solid rgba(42,110,42,0.2);
+            padding: 1.2rem 2.5rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--light);
+        }
+
+        .trust-icon { font-size: 1rem; }
+
+        /* ── SECTIONS ── */
+        section { padding: 6rem 2.5rem; }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            color: var(--green-bright);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.8rem;
+        }
+
+        .section-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            letter-spacing: 2px;
+            color: var(--white);
+            line-height: 1;
+        }
+
+        .section-sub {
+            color: var(--gray);
+            font-size: 0.95rem;
+            margin-top: 0.8rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .section-divider {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            margin: 1.2rem auto 0;
+            width: fit-content;
+        }
+
+        .divider-line {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--green));
+        }
+
+        .divider-line.right {
+            background: linear-gradient(to left, transparent, var(--green));
+        }
+
+        .divider-diamond {
+            width: 6px;
+            height: 6px;
+            background: var(--green-bright);
+            transform: rotate(45deg);
+        }
+
+        /* ── SERVICES ── */
+        #services { background: var(--darker); }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(42,110,42,0.15);
+            border-radius: 8px;
+            padding: 2rem;
+            transition: border-color 0.3s, transform 0.3s, background 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 2px;
+            background: linear-gradient(to right, transparent, var(--green), transparent);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .service-card:hover {
+            border-color: rgba(92,184,92,0.35);
+            transform: translateY(-4px);
+            background: rgba(42,110,42,0.07);
+        }
+
+        .service-card:hover::before { opacity: 1; }
+
+        .service-card.featured {
+            border-color: rgba(92,184,92,0.3);
+            background: rgba(42,110,42,0.08);
+            grid-column: span 1;
+        }
+
+        .service-card.featured::before { opacity: 1; }
+
+        .service-featured-badge {
+            display: inline-block;
+            background: var(--green);
+            color: var(--white);
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 0.25rem 0.7rem;
+            border-radius: 3px;
+            margin-bottom: 1rem;
+        }
+
+        .service-icon {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .service-name {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.2rem;
+            color: var(--white);
+            margin-bottom: 0.7rem;
+            letter-spacing: 0.5px;
+        }
+
+        .service-desc {
+            color: var(--gray);
+            font-size: 0.88rem;
+            line-height: 1.7;
+        }
+
+        /* ── OWNER SECTION ── */
+        #owner {
+            background: var(--black);
+        }
+
+        .owner-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .owner-photo-wrap {
+            position: relative;
+        }
+
+        .owner-photo-box {
+            aspect-ratio: 4/5;
+            background: linear-gradient(135deg, #1a2e1a 0%, #0d180d 100%);
+            border-radius: 8px;
+            border: 1px solid rgba(42,110,42,0.2);
+            overflow: hidden;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.1);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+        }
+
+        .owner-photo-box img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .owner-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+        }
+
+        .owner-corner.tl { top: -1px; left: -1px; border-top: 2px solid var(--green-bright); border-left: 2px solid var(--green-bright); }
+        .owner-corner.br { bottom: -1px; right: -1px; border-bottom: 2px solid var(--green-bright); border-right: 2px solid var(--green-bright); }
+
+        .owner-accent {
+            position: absolute;
+            bottom: -1.5rem;
+            right: -1.5rem;
+            width: 80px;
+            height: 80px;
+            background: rgba(42,110,42,0.12);
+            border-radius: 4px;
+            border: 1px solid rgba(42,110,42,0.2);
+        }
+
+        .owner-text .section-tag { text-align: left; }
+
+        .owner-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: clamp(2.2rem, 4vw, 3rem);
+            letter-spacing: 2px;
+            line-height: 1.05;
+            color: var(--white);
+            margin-bottom: 1.5rem;
+        }
+
+        .owner-title .green { color: var(--green-bright); }
+
+        .owner-body {
+            color: var(--light);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .owner-highlight {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+            padding: 1.2rem;
+            background: rgba(42,110,42,0.08);
+            border-left: 3px solid var(--green);
+            border-radius: 0 6px 6px 0;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+            color: var(--light);
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        .owner-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .owner-tag {
+            background: rgba(42,110,42,0.12);
+            border: 1px solid rgba(92,184,92,0.2);
+            color: var(--green-bright);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 0.4rem 0.9rem;
+            border-radius: 50px;
+        }
+
+        /* ── BEFORE & AFTER ── */
+        #gallery {
+            background: var(--darker);
+        }
+
+        .gallery-note {
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            margin-bottom: 2.5rem;
+        }
+
+        .ba-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .ba-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(42,110,42,0.15);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: border-color 0.3s, transform 0.3s;
+        }
+
+        .ba-card:hover {
+            border-color: rgba(92,184,92,0.3);
+            transform: translateY(-3px);
+        }
+
+        .ba-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2px;
+            height: 220px;
+        }
+
+        .ba-img {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #1a2e1a, #0d180d);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 0.4rem;
+            color: rgba(255,255,255,0.12);
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+        }
+
+        .ba-img img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .ba-label {
+            position: absolute;
+            top: 0.5rem;
+            left: 0.5rem;
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 3px;
+            z-index: 1;
+        }
+
+        .ba-label.before {
+            background: rgba(0,0,0,0.7);
+            color: var(--gray);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .ba-label.after {
+            background: rgba(42,110,42,0.8);
+            color: var(--white);
+        }
+
+        .ba-info {
+            padding: 1rem 1.2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ba-title {
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: var(--white);
+        }
+
+        .ba-tag {
+            font-size: 0.68rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--green-bright);
+            background: rgba(92,184,92,0.1);
+            padding: 0.2rem 0.6rem;
+            border-radius: 3px;
+        }
+
+        .ba-add {
+            text-align: center;
+            color: rgba(255,255,255,0.1);
+            font-size: 0.75rem;
+            letter-spacing: 2px;
+            padding: 1.5rem;
+            border: 1px dashed rgba(42,110,42,0.2);
+            border-radius: 8px;
+            max-width: 1000px;
+            margin: 1rem auto 0;
+        }
+
+        /* ── QUOTE FORM ── */
+        #quote {
+            background: var(--black);
+        }
+
+        .quote-inner {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .quote-form {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(42,110,42,0.2);
+            border-radius: 12px;
+            padding: 3rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group.full { grid-column: span 2; }
+
+        label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--light);
+        }
+
+        .required { color: var(--green-bright); margin-left: 2px; }
+
+        input, textarea, select {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(42,110,42,0.2);
+            border-radius: 6px;
+            padding: 0.8rem 1rem;
+            color: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            transition: border-color 0.3s;
+            width: 100%;
+        }
+
+        input::placeholder, textarea::placeholder { color: rgba(255,255,255,0.2); }
+
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: var(--green-bright);
+        }
+
+        select option { background: #1a2e1a; color: var(--white); }
+
+        textarea { resize: vertical; min-height: 130px; }
+
+        .services-check-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--light);
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .services-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            min-width: 18px;
+            accent-color: var(--green-bright);
+            cursor: pointer;
+            border-radius: 3px;
+        }
+
+        .checkbox-item span {
+            font-size: 0.82rem;
+            color: var(--light);
+            font-weight: 500;
+        }
+
+        .form-submit {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .form-disclaimer {
+            font-size: 0.75rem;
+            color: var(--gray);
+            line-height: 1.5;
+        }
+
+        .btn-submit {
+            background: var(--green);
+            color: var(--white);
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.9rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-submit:hover { background: var(--green-mid); transform: translateY(-2px); }
+
+        /* Success message */
+        .form-success {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: var(--green-bright);
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        /* ── SERVICE AREA ── */
+        .area-bar {
+            background: rgba(42,110,42,0.08);
+            border-top: 1px solid rgba(42,110,42,0.15);
+            border-bottom: 1px solid rgba(42,110,42,0.15);
+            padding: 2rem 2.5rem;
+            text-align: center;
+        }
+
+        .area-bar-title {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            color: var(--green-bright);
+            margin-bottom: 0.8rem;
+        }
+
+        .area-tags {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .area-tag {
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            color: var(--light);
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            padding: 0.35rem 0.9rem;
+            border-radius: 50px;
+        }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--darker);
+            border-top: 1px solid rgba(42,110,42,0.15);
+            padding: 3rem 2.5rem;
+        }
+
+        .footer-inner {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .footer-logo {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 900;
+            font-size: 1.3rem;
+            letter-spacing: 2px;
+            color: var(--white);
+        }
+
+        .footer-logo span { color: var(--green-bright); }
+
+        .footer-tagline {
+            font-size: 0.75rem;
+            color: var(--gray);
+            letter-spacing: 1px;
+            margin-top: 0.3rem;
+        }
+
+        .footer-contact a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 0.3rem;
+            transition: color 0.3s;
+        }
+
+        .footer-contact a:hover { color: var(--gold-light); }
+
+        .footer-contact p {
+            color: var(--gray);
+            font-size: 0.8rem;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: right;
+        }
+
+        .footer-links a {
+            color: var(--gray);
+            text-decoration: none;
+            font-size: 0.82rem;
+            letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover { color: var(--green-bright); }
+
+        .footer-bottom {
+            max-width: 1000px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-copy {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.2);
+        }
+
+        /* ── FADE IN ── */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+        .delay-1 { transition-delay: 0.1s; }
+        .delay-2 { transition-delay: 0.2s; }
+        .delay-3 { transition-delay: 0.3s; }
+        .delay-4 { transition-delay: 0.4s; }
+        .delay-5 { transition-delay: 0.5s; }
+
+        /* ── MOBILE NAV ── */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(8,15,8,0.98);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        .mobile-nav.open { display: flex; }
+
+        .mobile-nav a {
+            color: var(--white);
+            text-decoration: none;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2rem;
+            letter-spacing: 3px;
+            transition: color 0.3s;
+        }
+
+        .mobile-nav a:hover { color: var(--green-bright); }
+
+        .mobile-nav-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            font-size: 2rem;
+            color: var(--white);
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* ── RESPONSIVE ── */
+        @media (max-width: 900px) {
+            .nav-links { display: none; }
+            .hamburger { display: flex; }
+            .hero-photo { display: none; }
+            .hero-content { max-width: 100%; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .owner-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+            .owner-photo-wrap { max-width: 380px; margin: 0 auto; }
+            .ba-grid { grid-template-columns: 1fr; }
+            .form-row { grid-template-columns: 1fr; }
+            .form-group.full { grid-column: span 1; }
+            .services-checkboxes { grid-template-columns: repeat(2, 1fr); }
+            .footer-inner { flex-direction: column; text-align: center; }
+            .footer-links { text-align: center; }
+        }
+
+        @media (max-width: 600px) {
+            nav { padding: 1.2rem 1.2rem; }
+            section { padding: 4rem 1.2rem; }
+            .services-grid { grid-template-columns: 1fr; }
+            .hero-stats { gap: 1.5rem; }
+            .quote-form { padding: 1.8rem 1.2rem; }
+            .services-checkboxes { grid-template-columns: 1fr 1fr; }
+            .trust-bar { gap: 1.2rem; }
+            .form-submit { flex-direction: column; }
+            .btn-submit { width: 100%; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+    <button class="mobile-nav-close" onclick="closeMobileNav()">✕</button>
+    <a href="#services" onclick="closeMobileNav()">Services</a>
+    <a href="#owner" onclick="closeMobileNav()">About</a>
+    <a href="#gallery" onclick="closeMobileNav()">Our Work</a>
+    <a href="#quote" onclick="closeMobileNav()">Get a Quote</a>
+    <a href="tel:7079057606" style="color: var(--gold-light); font-size: 1.4rem;">(707) 905-7606</a>
+</div>
+
+<!-- NAV -->
+<nav id="navbar">
+    <div class="nav-logo">RBW<span>.</span>Landscape</div>
+    <div class="nav-right">
+        <ul class="nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#owner">About</a></li>
+            <li><a href="#gallery">Our Work</a></li>
+            <li><a href="#quote" class="nav-cta">Get a Quote</a></li>
+        </ul>
+        <a href="tel:7079057606" class="nav-phone">(707) 905-7606</a>
+        <div class="hamburger" onclick="openMobileNav()">
+            <span></span><span></span><span></span>
+        </div>
+    </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-photo">
+        <!-- Add hero background image: <img src="images/hero.jpg" alt="RBW Landscape"> -->
+        <div class="hero-photo-placeholder">
+            <span class="hero-photo-placeholder-icon">🌿</span>
+            <span>Add Hero Photo</span>
+        </div>
+    </div>
+    <div class="hero-content">
+        <div class="hero-badge">
+            <div class="hero-badge-dot"></div>
+            Clearlake, CA · Lake County
+        </div>
+        <h1 class="hero-title">
+            <span class="accent">RBW</span><br>
+            Landscape<br>
+            <span class="gold">Development</span>
+        </h1>
+        <p class="hero-sub">Hardscape, junk removal, mowing, hauling, rock installation, and fencing — done right, every time.</p>
+        <div class="hero-owner">Owner Operated · No Middleman · You Deal Directly With Me</div>
+        <div class="hero-buttons">
+            <a href="#quote" class="btn-green">Get a Free Quote</a>
+            <a href="#services" class="btn-outline">See Services</a>
+        </div>
+        <div class="hero-stats">
+            <div>
+                <div class="hero-stat-num">30mi</div>
+                <div class="hero-stat-label">Service Radius</div>
+            </div>
+            <div>
+                <div class="hero-stat-num">100%</div>
+                <div class="hero-stat-label">Owner Operated</div>
+            </div>
+            <div>
+                <div class="hero-stat-num">Free</div>
+                <div class="hero-stat-label">Estimates</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- TRUST BAR -->
+<div class="trust-bar">
+    <div class="trust-item"><span class="trust-icon">✅</span> Owner Operated</div>
+    <div class="trust-item"><span class="trust-icon">📍</span> Clearlake, CA</div>
+    <div class="trust-item"><span class="trust-icon">🗺️</span> All of Lake County</div>
+    <div class="trust-item"><span class="trust-icon">📞</span> Free Estimates</div>
+    <div class="trust-item"><span class="trust-icon">💪</span> No Job Too Big or Small</div>
+</div>
+
+<!-- SERVICES -->
+<section id="services">
+    <div class="section-header fade-in">
+        <span class="section-tag">What We Do</span>
+        <h2 class="section-title">Services Offered</h2>
+        <div class="section-divider">
+            <div class="divider-line"></div>
+            <div class="divider-diamond"></div>
+            <div class="divider-line right"></div>
+        </div>
+        <p class="section-sub">From clearing land to building it up — RBW handles it all across Lake County and within 30 miles.</p>
+    </div>
+
+    <div class="services-grid">
+        <!-- FEATURED: Junk Removal -->
+        <div class="service-card featured fade-in">
+            <span class="service-featured-badge">Most Requested</span>
+            <span class="service-icon">🗑️</span>
+            <div class="service-name">Junk Removal</div>
+            <p class="service-desc">Got clutter, debris, old furniture, or property trash taking up space? We haul it all — fast, efficient, and at a fair price. No load too big.</p>
+        </div>
+
+        <!-- FEATURED: Hardscape -->
+        <div class="service-card featured fade-in delay-1">
+            <span class="service-featured-badge">Specialty</span>
+            <span class="service-icon">🧱</span>
+            <div class="service-name">Hardscape</div>
+            <p class="service-desc">Patios, walkways, retaining walls, and more. We build hardscape features that are built to last and add real value to your property.</p>
+        </div>
+
+        <!-- FEATURED: Mowing -->
+        <div class="service-card featured fade-in delay-2">
+            <span class="service-featured-badge">Core Service</span>
+            <span class="service-icon">🌿</span>
+            <div class="service-name">Mowing & Lawn Care</div>
+            <p class="service-desc">Reliable, clean cuts every time. Whether it's a small yard or a large property, we keep your grass looking sharp all season long.</p>
+        </div>
+
+        <!-- Rock Installation -->
+        <div class="service-card fade-in delay-1">
+            <span class="service-icon">🪨</span>
+            <div class="service-name">Rock Installation</div>
+            <p class="service-desc">Decorative rock, gravel, drainage rock, and more — properly installed for curb appeal and long-term functionality.</p>
+        </div>
+
+        <!-- Hauling -->
+        <div class="service-card fade-in delay-2">
+            <span class="service-icon">🚛</span>
+            <div class="service-name">Hauling</div>
+            <p class="service-desc">Dirt, rock, debris, green waste — we haul it away. Equipment is ready to handle residential and commercial loads.</p>
+        </div>
+
+        <!-- Fencing -->
+        <div class="service-card fade-in delay-3">
+            <span class="service-icon">🪵</span>
+            <div class="service-name">Fencing</div>
+            <p class="service-desc">Wood, wire, or chain-link — we install fencing that gives you the privacy, security, and clean lines your property deserves.</p>
+        </div>
+    </div>
+</section>
+
+<!-- OWNER OPERATED -->
+<section id="owner">
+    <div class="owner-inner">
+        <div class="owner-photo-wrap fade-in">
+            <div class="owner-photo-box">
+                <!--
+                    ADD OWNER PHOTO:
+                    <img src="images/owner.jpg" alt="RBW Owner">
+                -->
+                <span style="font-size: 3rem; opacity: 0.15;">👷</span>
+                <span style="font-size: 0.7rem; letter-spacing: 2px; opacity: 0.15;">Add Owner Photo</span>
+            </div>
+            <div class="owner-corner tl"></div>
+            <div class="owner-corner br"></div>
+            <div class="owner-accent"></div>
+        </div>
+        <div class="owner-text fade-in delay-1">
+            <span class="section-tag">Owner Operated</span>
+            <h2 class="owner-title">You Deal <span class="green">Directly</span><br>With The Owner.</h2>
+            <p class="owner-body">RBW Landscape Development is owner operated — meaning when you call, you're talking to the person doing the work. No call centers, no subcontractors handling your job, no upselling from someone who's never touched a shovel.</p>
+            <div class="owner-highlight">
+                "I take pride in every job I do. Whether it's a junk haul, a full hardscape build, or keeping your lawn clean — you're getting my best work every time."
+            </div>
+            <p class="owner-body">Based in Clearlake, CA and serving all of Lake County and surrounding areas within 30 miles. Free estimates, honest pricing, and work you can count on.</p>
+            <div class="owner-tags">
+                <span class="owner-tag">Clearlake, CA</span>
+                <span class="owner-tag">Lake County</span>
+                <span class="owner-tag">30mi Radius</span>
+                <span class="owner-tag">Free Estimates</span>
+                <span class="owner-tag">Fully Equipped</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- BEFORE & AFTER -->
+<section id="gallery">
+    <div class="section-header fade-in">
+        <span class="section-tag">Proof of Work</span>
+        <h2 class="section-title">Before &amp; After</h2>
+        <div class="section-divider">
+            <div class="divider-line"></div>
+            <div class="divider-diamond"></div>
+            <div class="divider-line right"></div>
+        </div>
+        <p class="section-sub">Real jobs. Real results. See the difference RBW makes on properties across Lake County.</p>
+    </div>
+
+    <div class="ba-grid">
+        <!-- Before/After Card 1 -->
+        <div class="ba-card fade-in">
+            <div class="ba-images">
+                <div class="ba-img">
+                    <span class="ba-label before">Before</span>
+                    <!-- <img src="images/ba1-before.jpg" alt="Before"> -->
+                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
+                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                </div>
+                <div class="ba-img">
+                    <span class="ba-label after">After</span>
+                    <!-- <img src="images/ba1-after.jpg" alt="After"> -->
+                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
+                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                </div>
+            </div>
+            <div class="ba-info">
+                <span class="ba-title">Junk Removal</span>
+                <span class="ba-tag">Lake County</span>
+            </div>
+        </div>
+
+        <!-- Before/After Card 2 -->
+        <div class="ba-card fade-in delay-1">
+            <div class="ba-images">
+                <div class="ba-img">
+                    <span class="ba-label before">Before</span>
+                    <!-- <img src="images/ba2-before.jpg" alt="Before"> -->
+                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
+                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                </div>
+                <div class="ba-img">
+                    <span class="ba-label after">After</span>
+                    <!-- <img src="images/ba2-after.jpg" alt="After"> -->
+                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
+                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                </div>
+            </div>
+            <div class="ba-info">
+                <span class="ba-title">Hardscape Build</span>
+                <span class="ba-tag">Clearlake</span>
+            </div>
+        </div>
+
+        <!-- Before/After Card 3 -->
+        <div class="ba-card fade-in delay-2">
+            <div class="ba-images">
+                <div class="ba-img">
+                    <span class="ba-label before">Before</span>
+                    <!-- <img src="images/ba3-before.jpg" alt="Before"> -->
+                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
+                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                </div>
+                <div class="ba-img">
+                    <span class="ba-label after">After</span>
+                    <!-- <img src="images/ba3-after.jpg" alt="After"> -->
+                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
+                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                </div>
+            </div>
+            <div class="ba-info">
+                <span class="ba-title">Lawn Cleanup</span>
+                <span class="ba-tag">Lake County</span>
+            </div>
+        </div>
+
+        <!-- Before/After Card 4 -->
+        <div class="ba-card fade-in delay-3">
+            <div class="ba-images">
+                <div class="ba-img">
+                    <span class="ba-label before">Before</span>
+                    <!-- <img src="images/ba4-before.jpg" alt="Before"> -->
+                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
+                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                </div>
+                <div class="ba-img">
+                    <span class="ba-label after">After</span>
+                    <!-- <img src="images/ba4-after.jpg" alt="After"> -->
+                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
+                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                </div>
+            </div>
+            <div class="ba-info">
+                <span class="ba-title">Rock Installation</span>
+                <span class="ba-tag">Clearlake</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="ba-add fade-in">
+        📸 &nbsp; More project photos coming soon — ask about our past work when you call.
+    </div>
+</section>
+
+<!-- GET A QUOTE -->
+<section id="quote">
+    <div class="section-header fade-in">
+        <span class="section-tag">Free Estimates</span>
+        <h2 class="section-title">Get a Quote</h2>
+        <div class="section-divider">
+            <div class="divider-line"></div>
+            <div class="divider-diamond"></div>
+            <div class="divider-line right"></div>
+        </div>
+        <p class="section-sub">Fill out the form below and I'll get back to you directly — no runaround, no sales pitch.</p>
+    </div>
+
+    <div class="quote-inner">
+        <div class="quote-form fade-in">
+            <!--
+                TO ACTIVATE THIS FORM:
+                1. Go to https://formspree.io and create a free account
+                2. Create a new form and copy your form endpoint
+                3. Replace "YOUR_FORMSPREE_ID" below with your actual endpoint
+                   Example: action="https://formspree.io/f/abcdefgh"
+            -->
+            <form id="quoteForm" action="https://formspree.io/f/YOUR_FORMSPREE_ID" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="name">Full Name <span class="required">*</span></label>
+                        <input type="text" id="name" name="name" placeholder="John Smith" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="phone" name="phone" placeholder="(707) 555-0000" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" name="email" placeholder="john@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Property Address <span class="required">*</span></label>
+                        <input type="text" id="address" name="address" placeholder="123 Main St, Clearlake CA" required>
+                    </div>
+                </div>
+
+                <div>
+                    <span class="services-check-label">Services Needed <span class="required">*</span></span>
+                    <div class="services-checkboxes">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="Junk Removal">
+                            <span>Junk Removal</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="Hardscape">
+                            <span>Hardscape</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="Mowing">
+                            <span>Mowing</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="Rock Installation">
+                            <span>Rock Installation</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="Hauling">
+                            <span>Hauling</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="services" value="Fencing">
+                            <span>Fencing</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="details">Tell Me About the Job <span class="required">*</span></label>
+                    <textarea id="details" name="details" placeholder="Describe what you need done — size of the area, what's there now, any specific details that help me give you an accurate quote..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="timeline">Desired Timeline</label>
+                    <select id="timeline" name="timeline">
+                        <option value="" disabled selected>When do you need this done?</option>
+                        <option value="ASAP">As soon as possible</option>
+                        <option value="This week">This week</option>
+                        <option value="This month">This month</option>
+                        <option value="Just planning">Just getting a quote / planning ahead</option>
+                    </select>
+                </div>
+
+                <div class="form-submit">
+                    <p class="form-disclaimer">I'll respond within 24 hours. You can also call me directly at <strong style="color: var(--gold);">(707) 905-7606</strong>.</p>
+                    <button type="submit" class="btn-submit">Send Request →</button>
+                </div>
+            </form>
+            <div class="form-success" id="formSuccess">
+                ✅ &nbsp; Request sent! I'll be in touch within 24 hours.
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- SERVICE AREA -->
+<div class="area-bar">
+    <div class="area-bar-title">Service Area — Lake County & 30-Mile Radius</div>
+    <div class="area-tags">
+        <span class="area-tag">Clearlake</span>
+        <span class="area-tag">Clearlake Oaks</span>
+        <span class="area-tag">Lakeport</span>
+        <span class="area-tag">Kelseyville</span>
+        <span class="area-tag">Middletown</span>
+        <span class="area-tag">Lower Lake</span>
+        <span class="area-tag">Lucerne</span>
+        <span class="area-tag">Nice</span>
+        <span class="area-tag">Cobb</span>
+        <span class="area-tag">Hidden Valley Lake</span>
+        <span class="area-tag">& Surrounding Areas</span>
+    </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-inner">
+        <div>
+            <div class="footer-logo">RBW<span>.</span>Landscape</div>
+            <div class="footer-tagline">Development · Clearlake, CA · Owner Operated</div>
+        </div>
+        <div class="footer-contact">
+            <a href="tel:7079057606">(707) 905-7606</a>
+            <p>Clearlake, CA · Lake County</p>
+        </div>
+        <div class="footer-links">
+            <a href="#services">Services</a>
+            <a href="#owner">About</a>
+            <a href="#gallery">Our Work</a>
+            <a href="#quote">Get a Quote</a>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p class="footer-copy">© 2026 RBW Landscape Development. All rights reserved.</p>
+        <p class="footer-copy">Clearlake, CA · Serving Lake County & 30mi Radius</p>
+    </div>
+</footer>
+
+<script>
+    // NAV SCROLL
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+        navbar.classList.toggle('scrolled', window.scrollY > 40);
+    });
+
+    // MOBILE NAV
+    function openMobileNav() {
+        document.getElementById('mobileNav').classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeMobileNav() {
+        document.getElementById('mobileNav').classList.remove('open');
+        document.body.style.overflow = '';
+    }
+
+    // FADE IN OBSERVER
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => {
+            if (e.isIntersecting) {
+                e.target.classList.add('visible');
+                observer.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.12 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // FORM HANDLING
+    const form = document.getElementById('quoteForm');
+    form.addEventListener('submit', async (e) => {
+        const action = form.getAttribute('action');
+        if (action.includes('YOUR_FORMSPREE_ID')) {
+            // Formspree not yet configured — show success anyway for preview
+            e.preventDefault();
+            form.style.display = 'none';
+            document.getElementById('formSuccess').style.display = 'block';
+            return;
+        }
+        // Actual Formspree submission
+        e.preventDefault();
+        const data = new FormData(form);
+        try {
+            const res = await fetch(action, {
+                method: 'POST',
+                body: data,
+                headers: { 'Accept': 'application/json' }
+            });
+            if (res.ok) {
+                form.style.display = 'none';
+                document.getElementById('formSuccess').style.display = 'block';
+            }
+        } catch(err) {
+            alert('Something went wrong. Please call (707) 905-7606 directly.');
+        }
+    });
+</script>
+
+</body>
+</html>
