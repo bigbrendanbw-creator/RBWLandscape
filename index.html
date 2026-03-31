@@ -34,6 +34,62 @@
             -webkit-font-smoothing: antialiased;
         }
 
+        /* ── ANIMATED BACKGROUND ── */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background: var(--black);
+            pointer-events: none;
+        }
+
+        .bg-orb {
+            position: fixed;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.12;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .bg-orb-1 {
+            width: 500px; height: 500px;
+            background: var(--green);
+            top: -100px; left: -100px;
+            animation: orbFloat1 18s ease-in-out infinite;
+        }
+
+        .bg-orb-2 {
+            width: 400px; height: 400px;
+            background: var(--green-mid);
+            bottom: 10%; right: -80px;
+            animation: orbFloat2 22s ease-in-out infinite;
+        }
+
+        .bg-orb-3 {
+            width: 300px; height: 300px;
+            background: var(--green-bright);
+            top: 40%; left: 30%;
+            opacity: 0.07;
+            animation: orbFloat3 15s ease-in-out infinite;
+        }
+
+        @keyframes orbFloat1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33%       { transform: translate(120px, 80px) scale(1.1); }
+            66%       { transform: translate(40px, 160px) scale(0.95); }
+        }
+        @keyframes orbFloat2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33%       { transform: translate(-100px, -60px) scale(1.05); }
+            66%       { transform: translate(-40px, -140px) scale(0.9); }
+        }
+        @keyframes orbFloat3 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50%       { transform: translate(-80px, 60px) scale(1.15); }
+        }
+
         /* ── SCROLLBAR ── */
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: var(--dark); }
@@ -106,7 +162,7 @@
         .nav-cta:hover { background: var(--green-mid) !important; color: var(--white) !important; }
 
         .nav-phone {
-            color: var(--gold);
+            color: var(--white);
             font-weight: 600;
             font-size: 0.9rem;
             text-decoration: none;
@@ -114,7 +170,7 @@
             transition: color 0.3s;
         }
 
-        .nav-phone:hover { color: var(--gold-light); }
+        .nav-phone:hover { color: var(--light); }
 
         .hamburger {
             display: none;
@@ -1229,6 +1285,11 @@
 </head>
 <body>
 
+<!-- ANIMATED BG ORBS -->
+<div class="bg-orb bg-orb-1"></div>
+<div class="bg-orb bg-orb-2"></div>
+<div class="bg-orb bg-orb-3"></div>
+
 <!-- FLOATING CALL BUTTON (mobile) -->
 <a href="tel:7079057606" class="fab-call">📞 &nbsp;Call (707) 905-7606</a>
 
@@ -1263,11 +1324,7 @@
 <section id="hero">
     <div class="hero-bg"></div>
     <div class="hero-photo">
-        <!-- Add hero background image: <img src="images/hero.jpg" alt="RBW Landscape"> -->
-        <div class="hero-photo-placeholder">
-            <span class="hero-photo-placeholder-icon">🌿</span>
-            <span>Add Hero Photo</span>
-        </div>
+        <img src="images/hero.jpg" alt="RBW Landscape Development">
     </div>
     <div class="hero-content">
         <div class="hero-badge">
@@ -1328,7 +1385,7 @@
         <!-- FEATURED: Junk Removal -->
         <div class="service-card featured fade-in">
             <span class="service-featured-badge">Most Requested</span>
-            <span class="service-icon">🗑️</span>
+            <span class="service-icon">🚮</span>
             <div class="service-name">Junk Removal</div>
             <p class="service-desc">Got clutter, debris, old furniture, or property trash taking up space? We haul it all — fast, efficient, and at a fair price. No load too big.</p>
         </div>
@@ -1336,7 +1393,7 @@
         <!-- FEATURED: Hardscape -->
         <div class="service-card featured fade-in delay-1">
             <span class="service-featured-badge">Specialty</span>
-            <span class="service-icon">🧱</span>
+            <span class="service-icon">🏗️</span>
             <div class="service-name">Hardscape</div>
             <p class="service-desc">Patios, walkways, retaining walls, and more. We build hardscape features that are built to last and add real value to your property.</p>
         </div>
@@ -1344,7 +1401,7 @@
         <!-- FEATURED: Mowing -->
         <div class="service-card featured fade-in delay-2">
             <span class="service-featured-badge">Core Service</span>
-            <span class="service-icon">🌿</span>
+            <span class="service-icon">🌾</span>
             <div class="service-name">Mowing & Lawn Care</div>
             <p class="service-desc">Reliable, clean cuts every time. Whether it's a small yard or a large property, we keep your grass looking sharp all season long.</p>
         </div>
@@ -1365,7 +1422,7 @@
 
         <!-- Fencing -->
         <div class="service-card fade-in delay-3">
-            <span class="service-icon">🪵</span>
+            <span class="service-icon">🚧</span>
             <div class="service-name">Fencing</div>
             <p class="service-desc">Wood, wire, or chain-link — we install fencing that gives you the privacy, security, and clean lines your property deserves.</p>
         </div>
@@ -1421,20 +1478,16 @@
     </div>
 
     <div class="ba-grid">
-        <!-- Before/After Card 1 -->
+        <!-- Before/After Card 1: Junk Removal -->
         <div class="ba-card fade-in">
             <div class="ba-images">
                 <div class="ba-img">
                     <span class="ba-label before">Before</span>
-                    <!-- <img src="images/ba1-before.jpg" alt="Before"> -->
-                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
-                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                    <img src="images/junk-before.jpg" alt="Junk Removal Before">
                 </div>
                 <div class="ba-img">
                     <span class="ba-label after">After</span>
-                    <!-- <img src="images/ba1-after.jpg" alt="After"> -->
-                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
-                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                    <img src="images/junk-after.jpg" alt="Junk Removal After">
                 </div>
             </div>
             <div class="ba-info">
@@ -1443,20 +1496,16 @@
             </div>
         </div>
 
-        <!-- Before/After Card 2 -->
+        <!-- Before/After Card 2: Hardscape -->
         <div class="ba-card fade-in delay-1">
             <div class="ba-images">
                 <div class="ba-img">
                     <span class="ba-label before">Before</span>
-                    <!-- <img src="images/ba2-before.jpg" alt="Before"> -->
-                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
-                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                    <img src="images/hardscape-before.jpg" alt="Hardscape Before">
                 </div>
                 <div class="ba-img">
                     <span class="ba-label after">After</span>
-                    <!-- <img src="images/ba2-after.jpg" alt="After"> -->
-                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
-                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                    <img src="images/hardscape-after.jpg" alt="Hardscape After">
                 </div>
             </div>
             <div class="ba-info">
@@ -1465,20 +1514,16 @@
             </div>
         </div>
 
-        <!-- Before/After Card 3 -->
+        <!-- Before/After Card 3: Lawn Cleanup -->
         <div class="ba-card fade-in delay-2">
             <div class="ba-images">
                 <div class="ba-img">
                     <span class="ba-label before">Before</span>
-                    <!-- <img src="images/ba3-before.jpg" alt="Before"> -->
-                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
-                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                    <img src="images/lawn-before.jpg" alt="Lawn Cleanup Before">
                 </div>
                 <div class="ba-img">
                     <span class="ba-label after">After</span>
-                    <!-- <img src="images/ba3-after.jpg" alt="After"> -->
-                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
-                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                    <img src="images/lawn-after.jpg" alt="Lawn Cleanup After">
                 </div>
             </div>
             <div class="ba-info">
@@ -1487,20 +1532,16 @@
             </div>
         </div>
 
-        <!-- Before/After Card 4 -->
+        <!-- Before/After Card 4: Rock Installation -->
         <div class="ba-card fade-in delay-3">
             <div class="ba-images">
                 <div class="ba-img">
                     <span class="ba-label before">Before</span>
-                    <!-- <img src="images/ba4-before.jpg" alt="Before"> -->
-                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
-                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                    <img src="images/rock-before.jpg" alt="Rock Installation Before">
                 </div>
                 <div class="ba-img">
                     <span class="ba-label after">After</span>
-                    <!-- <img src="images/ba4-after.jpg" alt="After"> -->
-                    <span style="font-size: 1.5rem; opacity: 0.15;">📷</span>
-                    <span style="font-size: 0.65rem; letter-spacing: 1px; opacity: 0.2;">Add Photo</span>
+                    <img src="images/rock-after.jpg" alt="Rock Installation After">
                 </div>
             </div>
             <div class="ba-info">
