@@ -116,15 +116,24 @@
         }
 
         .nav-logo {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 900;
-            font-size: 1.4rem;
-            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
             color: var(--white);
-            text-transform: uppercase;
+            text-decoration: none;
         }
 
-        .nav-logo span { color: var(--green-bright); }
+        .nav-logo img {
+            height: 42px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-logo span { color: var(--gold); }
 
         .nav-right {
             display: flex;
@@ -1172,7 +1181,8 @@
                 backdrop-filter: blur(10px);
             }
             nav.scrolled { padding: 0.9rem 1.2rem; }
-            .nav-logo { font-size: 1.15rem; }
+            .nav-logo { font-size: 1.1rem; }
+            .nav-logo img { height: 32px; }
 
             /* Sections */
             section { padding: 3.5rem 1.1rem; }
@@ -1309,7 +1319,10 @@
 
 <!-- NAV -->
 <nav id="navbar">
-    <div class="nav-logo">RBW<span>.</span>Landscape</div>
+    <div class="nav-logo">
+        <img src="images/logo.png" alt="RBW Landscape">
+        RBW <span>Landscape</span>
+    </div>
     <div class="nav-right">
         <ul class="nav-links">
             <li><a href="#services">Services</a></li>
